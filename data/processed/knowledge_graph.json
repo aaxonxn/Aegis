@@ -1,0 +1,471 @@
+{
+  "entities": [
+    {
+      "entity_id": "A17",
+      "canonical_name": "Alarm A17: Hydraulic Pressure Low",
+      "entity_type": "ALARM",
+      "aliases": [
+        "A17",
+        "Alarm A17",
+        "hydraulic_pressure_low"
+      ],
+      "location": "N/A (Software Alarm)",
+      "status": "ACTIVE",
+      "description": "Triggers when HPU discharge pressure drops below 150 bar. Panel indication: RED. If persistent > 10s, requires Shutdown Procedure 4.7.",
+      "notes": "Evaluated against active sensor (PS-04 pre-3.2, PS-04A post-3.2 per ECN-1058).",
+      "metadata": {}
+    },
+    {
+      "entity_id": "A18",
+      "canonical_name": "Alarm A18: Hydraulic Pressure High",
+      "entity_type": "ALARM",
+      "aliases": [
+        "A18",
+        "Alarm A18",
+        "hydraulic_pressure_high"
+      ],
+      "location": "N/A (Software Alarm)",
+      "status": "ACTIVE",
+      "description": "Triggers when HPU discharge pressure exceeds 220 bar. Panel indication: AMBER. Requires stopping HPU immediately.",
+      "notes": "Possible causes: relief valve fault or setpoint misconfiguration.",
+      "metadata": {}
+    },
+    {
+      "entity_id": "A19",
+      "canonical_name": "Alarm A19: Pressure Sensor Signal Invalid",
+      "entity_type": "ALARM",
+      "aliases": [
+        "A19",
+        "Alarm A19",
+        "pressure_sensor_signal_invalid"
+      ],
+      "location": "N/A (Software Alarm)",
+      "status": "ACTIVE",
+      "description": "Triggers when pressure sensor signal is out of bounds or drifting. Panel indication: RED. Requires sensor replacement.",
+      "notes": "Historical cause on PS-04 was sensor drift after 18 months, remedied by PS-04A.",
+      "metadata": {}
+    },
+    {
+      "entity_id": "Auxiliary Reservoir",
+      "canonical_name": "Auxiliary Reservoir",
+      "entity_type": "RESERVOIR",
+      "aliases": [
+        "Auxiliary Reservoir",
+        "Aux Reservoir"
+      ],
+      "location": "Line 4/5 Skid B",
+      "status": "ACTIVE",
+      "description": "Secondary reservoir that tops up main reservoir during peak press demand on Line 4/5.",
+      "notes": "Line 4/5-specific configuration detail not covered in standard Operator Manual; introduced in training deck and hydraulic schematic.",
+      "metadata": {}
+    },
+    {
+      "entity_id": "T1",
+      "canonical_name": "Control Transformer T1",
+      "entity_type": "ELECTRICAL_DEVICE",
+      "aliases": [
+        "T1",
+        "CONTROL XFMR T1",
+        "Control Transformer"
+      ],
+      "location": "Control Cabinet 1",
+      "status": "ACTIVE",
+      "description": "Steps incoming 480V power down to 120V for control circuits.",
+      "notes": "480:120V ratio.",
+      "metadata": {}
+    },
+    {
+      "entity_id": "PLC-03",
+      "canonical_name": "HCS Controller",
+      "entity_type": "CONTROLLER",
+      "aliases": [
+        "PLC-03",
+        "PLC03",
+        "HCS Controller",
+        "Controller",
+        "Aegis Controller",
+        "PLC-03 I/O RACK",
+        "PLC-03 24VDC",
+        "controller_id"
+      ],
+      "location": "Control Cabinet 1",
+      "status": "ACTIVE",
+      "description": "Supervises startup sequencing, pressure regulation, alarm monitoring, and safety interlocks.",
+      "notes": "Resetting blocked in firmware above 50 bar to prevent uncommanded valve transition.",
+      "metadata": {}
+    },
+    {
+      "entity_id": "HPU",
+      "canonical_name": "Hydraulic Power Unit",
+      "entity_type": "SUBSYSTEM",
+      "aliases": [
+        "HPU",
+        "Hydraulic Power Unit",
+        "Hydraulic Unit",
+        "HP unit",
+        "Hydraulic Power Pack",
+        "the unit",
+        "hydraulic pack"
+      ],
+      "location": "Skid A, Bay 2",
+      "status": "ACTIVE",
+      "description": "Primary hydraulic pressure source for the press circuit. Supplies pressurized fluid under supervision of PLC-03.",
+      "notes": "Standard documentation uses 'Hydraulic Power Unit', while maintenance and training informal materials use 'HP unit' or 'Hydraulic Power Pack'.",
+      "metadata": {}
+    },
+    {
+      "entity_id": "IV-21",
+      "canonical_name": "Isolation Valve 21",
+      "entity_type": "VALVE",
+      "aliases": [
+        "IV-21",
+        "IV21",
+        "Isolation Valve 21",
+        "Isolation Valve",
+        "IV-21 SOLENOID",
+        "IV-21 VALVE",
+        "valve_iv21"
+      ],
+      "location": "Hydraulic Module",
+      "status": "ACTIVE",
+      "description": "Isolates the HPU from the press circuit. Must be OPEN prior to HPU startup.",
+      "notes": "Supervised by PLC-03. Solenoid driven via 24VDC driver output.",
+      "metadata": {}
+    },
+    {
+      "entity_id": "Q1",
+      "canonical_name": "Main Disconnect Q1",
+      "entity_type": "ELECTRICAL_DEVICE",
+      "aliases": [
+        "Q1",
+        "MAIN DISCONNECT Q1",
+        "Main Disconnect"
+      ],
+      "location": "Control Cabinet 1",
+      "status": "ACTIVE",
+      "description": "Incoming 480V electrical main power disconnect switch.",
+      "notes": "Standard incoming voltage is 480V 3-phase.",
+      "metadata": {}
+    },
+    {
+      "entity_id": "Main Reservoir",
+      "canonical_name": "Main Reservoir",
+      "entity_type": "RESERVOIR",
+      "aliases": [
+        "Main Reservoir",
+        "Reservoir",
+        "fluid_level"
+      ],
+      "location": "Hydraulic Skid A",
+      "status": "ACTIVE",
+      "description": "Primary hydraulic fluid storage tank equipped with sight glass level indicator.",
+      "notes": "Fluid level must be in normal band prior to HPU startup.",
+      "metadata": {}
+    },
+    {
+      "entity_id": "Press Circuit",
+      "canonical_name": "Press Circuit",
+      "entity_type": "SUBSYSTEM",
+      "aliases": [
+        "Press Circuit",
+        "downstream press circuit"
+      ],
+      "location": "Downstream of IV-21",
+      "status": "ACTIVE",
+      "description": "The hydraulic actuator and valve circuit driving the press operation.",
+      "notes": "Supplied by HPU via isolation valve IV-21.",
+      "metadata": {}
+    },
+    {
+      "entity_id": "PS-04",
+      "canonical_name": "Pressure Sensor 04",
+      "entity_type": "SENSOR",
+      "aliases": [
+        "PS-04",
+        "PS04",
+        "P04",
+        "PRESSURE SENSOR 04",
+        "Pressure Sensor 04",
+        "sensor_ps04",
+        "sensor_ps04_legacy"
+      ],
+      "location": "HPU discharge line",
+      "status": "SUPERSEDED",
+      "description": "Original HPU discharge pressure transducer used on software revisions prior to 3.2. Operating setpoint 180 bar.",
+      "notes": "Superseded by PS-04A per ECN-1042 due to signal drift after ~18 months continuous operation triggering nuisance A19 alarms. Must NOT be merged with PS-04A or PS-40.",
+      "metadata": {}
+    },
+    {
+      "entity_id": "PS-04A",
+      "canonical_name": "Pressure Sensor 04A",
+      "entity_type": "SENSOR",
+      "aliases": [
+        "PS-04A",
+        "PS04A",
+        "P04A",
+        "Pressure Sensor 04A",
+        "P.S. 04-A",
+        "P.S.04-A",
+        "sensor_ps04a",
+        "PRESSURE XDCR"
+      ],
+      "location": "HPU discharge line",
+      "status": "ACTIVE",
+      "description": "Updated HPU discharge pressure transducer active on software revision 3.2 and later. Operating setpoint 200 bar, 4-20mA loop.",
+      "notes": "Introduced by ECN-1042. Requires firmware >= 3.2. Physical label on device reads 'P.S. 04-A' as confirmed on Diagnostics screen.",
+      "metadata": {}
+    },
+    {
+      "entity_id": "PS-40",
+      "canonical_name": "Pressure Sensor 40",
+      "entity_type": "SENSOR",
+      "aliases": [
+        "PS-40",
+        "PS40",
+        "P40",
+        "Pressure Sensor 40",
+        "sensor_ps40"
+      ],
+      "location": "Coolant Loop, Skid B",
+      "status": "ACTIVE",
+      "description": "Pressure sensor dedicated to the auxiliary coolant loop on Skid B. Completely unrelated to the HPU discharge circuit.",
+      "notes": "CRITICAL DISAMBIGUATION: PS-40 shares a numerical prefix with PS-04 but is situated in a different loop on a different skid. Never merge with PS-04 or PS-04A.",
+      "metadata": {}
+    },
+    {
+      "entity_id": "TB-7",
+      "canonical_name": "Terminal Block 7",
+      "entity_type": "ELECTRICAL_DEVICE",
+      "aliases": [
+        "TB-7",
+        "Terminal Block TB-7",
+        "TB7"
+      ],
+      "location": "Control Cabinet 1",
+      "status": "ACTIVE",
+      "description": "Wiring terminal block interfacing the 4-20mA pressure transducer loop to PLC-03.",
+      "notes": "Corresponds to PS-04A signal loop wiring designation in AEG-DWG-W03.",
+      "metadata": {}
+    }
+  ],
+  "relationships": [
+    {
+      "relationship_id": "rel_plc03_ps04a",
+      "source_entity": "PLC-03",
+      "target_entity": "PS-04A",
+      "relation_type": "MONITORS_SIGNAL",
+      "source_document": "diagrams/system_diagram_hydraulic.pdf",
+      "source_location": "Drawing Line 8 (Purple signal loop to Box 2)",
+      "extraction_method": "vector_shape_analysis",
+      "confidence": 0.95,
+      "status": "CONFIRMED",
+      "notes": "Purple line on AEG-DWG-H01 denotes control/signal connection to PLC-03."
+    },
+    {
+      "relationship_id": "rel_plc03_iv21",
+      "source_entity": "PLC-03",
+      "target_entity": "IV-21",
+      "relation_type": "CONTROLS_SOLENOID",
+      "source_document": "diagrams/system_diagram_hydraulic.pdf",
+      "source_location": "Drawing Line 9 (Purple signal loop to Box 3)",
+      "extraction_method": "vector_shape_analysis",
+      "confidence": 0.95,
+      "status": "CONFIRMED",
+      "notes": "Purple line on AEG-DWG-H01 denotes control/signal connection to PLC-03."
+    },
+    {
+      "relationship_id": "rel_plc03_hpu_uncertain",
+      "source_entity": "PLC-03",
+      "target_entity": "HPU",
+      "relation_type": "HYDRAULIC_CONNECTION_ANOMALY",
+      "source_document": "diagrams/system_diagram_hydraulic.pdf",
+      "source_location": "Drawing Line 7 (Grey line between PLC-03 and HPU)",
+      "extraction_method": "vector_shape_analysis",
+      "confidence": 0.4,
+      "status": "UNCERTAIN_EDGE_FLAGGED_FOR_REVIEW",
+      "notes": "Grey line denotes hydraulic fluid path according to drawing legend. Electronic controllers do not carry hydraulic fluid; flagged for manual review."
+    },
+    {
+      "relationship_id": "rel_hpu_ps04a",
+      "source_entity": "HPU",
+      "target_entity": "PS-04A",
+      "relation_type": "DISCHARGE_MEASURED_BY",
+      "source_document": "manuals/operator_manual.pdf",
+      "source_location": "Section 2 & Section 4.3",
+      "extraction_method": "pymupdf_text",
+      "confidence": 1.0,
+      "status": "CONFIRMED",
+      "notes": null
+    },
+    {
+      "relationship_id": "rel_hpu_iv21",
+      "source_entity": "HPU",
+      "target_entity": "IV-21",
+      "relation_type": "FEEDS_FLUID_THROUGH",
+      "source_document": "manuals/operator_manual.pdf",
+      "source_location": "Section 2 & Section 4.3",
+      "extraction_method": "pymupdf_text",
+      "confidence": 1.0,
+      "status": "CONFIRMED",
+      "notes": null
+    },
+    {
+      "relationship_id": "rel_iv21_press_circuit",
+      "source_entity": "IV-21",
+      "target_entity": "Press Circuit",
+      "relation_type": "ISOLATES_CIRCUIT",
+      "source_document": "diagrams/system_diagram_hydraulic.pdf",
+      "source_location": "Drawing Line 14",
+      "extraction_method": "vector_shape_analysis",
+      "confidence": 1.0,
+      "status": "CONFIRMED",
+      "notes": null
+    },
+    {
+      "relationship_id": "rel_main_aux_reservoir",
+      "source_entity": "Auxiliary Reservoir",
+      "target_entity": "Main Reservoir",
+      "relation_type": "TOPS_UP_DURING_PEAK",
+      "source_document": "extra/training_slide_excerpt.pptx",
+      "source_location": "Slide 2 & Drawing Line 15 (Tan line on hydraulic schematic)",
+      "extraction_method": "python_pptx",
+      "confidence": 0.95,
+      "status": "CONFIRMED",
+      "notes": null
+    },
+    {
+      "relationship_id": "rel_ecn1042_supersedes_ps04",
+      "source_entity": "PS-04A",
+      "target_entity": "PS-04",
+      "relation_type": "SUPERSEDES_HARDWARE",
+      "source_document": "engineering_bulletins/ECN-1042.pdf",
+      "source_location": "Section 1",
+      "extraction_method": "pymupdf_text",
+      "confidence": 1.0,
+      "status": "CONFIRMED",
+      "notes": null
+    }
+  ],
+  "conflicts": [
+    {
+      "conflict_id": "CONF-001",
+      "topic": "HPU Normal Operating Pressure Setpoint",
+      "entity_id": "HPU",
+      "conflicting_facts": [
+        {
+          "source": "manuals/operator_manual.pdf (Rev 4, Sec 4.3, 5)",
+          "value": "200 bar",
+          "applicability": "Software revision 3.2 and later (units manufactured after 2024)",
+          "trust_level": "OFFICIAL",
+          "status": "CURRENT_ACTIVE"
+        },
+        {
+          "source": "engineering_bulletins/ECN-1042.pdf (Sec 1)",
+          "value": "200 bar (revised from 180 bar)",
+          "applicability": "Effective software revision 3.2",
+          "trust_level": "AUTHORITATIVE_BULLETIN",
+          "status": "CURRENT_ACTIVE"
+        },
+        {
+          "source": "configuration/configuration_export.json (sensor_ps04a_threshold_bar)",
+          "value": "200 bar",
+          "applicability": "Firmware 3.2.1",
+          "trust_level": "SYSTEM_CONFIG",
+          "status": "CURRENT_ACTIVE"
+        },
+        {
+          "source": "manuals/legacy_manual_v1.html (Sec 5)",
+          "value": "180 bar",
+          "applicability": "Software revisions 3.0 and 3.1 only",
+          "trust_level": "OFFICIAL_SUPERSEDED",
+          "status": "HISTORICAL_SUPERSEDED"
+        },
+        {
+          "source": "configuration/configuration_export.json (sensor_ps04_legacy_threshold_bar)",
+          "value": "180 bar",
+          "applicability": "Applies before firmware 3.2",
+          "trust_level": "SYSTEM_CONFIG",
+          "status": "HISTORICAL_SUPERSEDED"
+        },
+        {
+          "source": "low_trust/site_survey_notes.docx (Line 4 HPU notes)",
+          "value": "175 bar (local gauge observation)",
+          "applicability": "Line 4 field visit (uncalibrated gauge)",
+          "trust_level": "FIELD_UNREVIEWED",
+          "status": "REJECTED_AS_SPECIFICATION"
+        }
+      ],
+      "resolution_status": "VERSION_SCOPED",
+      "resolution_rationale": "The 180 bar and 200 bar specifications are version-scoped, not mutually exclusive errors. Per ECN-1042 and Operator Manual Rev 4, 180 bar was the standard setpoint for software revisions < 3.2. Effective software revision 3.2, the setpoint was increased to 200 bar to improve cycle times. The 175 bar reading in site_survey_notes.docx represents an unverified field observation on an uncalibrated local gauge, and does not alter the official engineering setpoint.",
+      "preferred_fact_id": "fact_hpu_operating_pressure_current"
+    },
+    {
+      "conflict_id": "CONF-002",
+      "topic": "HPU Discharge Pressure Sensor Active Model",
+      "entity_id": "PS-04A",
+      "conflicting_facts": [
+        {
+          "source": "manuals/legacy_manual_v1.html & component_register.xlsx",
+          "value": "PS-04",
+          "applicability": "Software revision < 3.2",
+          "trust_level": "OFFICIAL_SUPERSEDED",
+          "status": "SUPERSEDED"
+        },
+        {
+          "source": "engineering_bulletins/ECN-1042.pdf",
+          "value": "PS-04A",
+          "applicability": "Software revision >= 3.2",
+          "trust_level": "AUTHORITATIVE_BULLETIN",
+          "status": "CURRENT_ACTIVE"
+        }
+      ],
+      "resolution_status": "SUPERSEDED_BY_ECN",
+      "resolution_rationale": "ECN-1042 explicitly supersedes PS-04 with PS-04A for all units at software revision 3.2 or later. PS-04 remains installed only on units running legacy firmware.",
+      "preferred_fact_id": "fact_ps04a_active"
+    },
+    {
+      "conflict_id": "CONF-003",
+      "topic": "Alarm A17 Sensor Reference Condition",
+      "entity_id": "A17",
+      "conflicting_facts": [
+        {
+          "source": "reference/alarm_reference.pdf (pre-Rev 5 text)",
+          "value": "Evaluated specifically against sensor PS-04",
+          "trust_level": "OFFICIAL_SUPERSEDED",
+          "status": "SUPERSEDED"
+        },
+        {
+          "source": "engineering_bulletins/ECN-1058.pdf & alarm_reference.pdf Rev 5",
+          "value": "Evaluated against whichever sensor is active for installed revision (PS-04 or PS-04A)",
+          "trust_level": "AUTHORITATIVE_BULLETIN",
+          "status": "CURRENT_ACTIVE"
+        }
+      ],
+      "resolution_status": "SUPERSEDED_BY_ECN",
+      "resolution_rationale": "ECN-1058 issued a documentation correction establishing that Alarm A17's condition evaluates against the active sensor (PS-04 pre-3.2, PS-04A post-3.2). The low-pressure threshold itself remains constant at 150 bar.",
+      "preferred_fact_id": "fact_a17_sensor_condition_ecn1058"
+    },
+    {
+      "conflict_id": "CONF-004",
+      "topic": "Hydraulic Schematic Line Anomaly: PLC-03 to HPU",
+      "entity_id": "PLC-03",
+      "conflicting_facts": [
+        {
+          "source": "diagrams/system_diagram_hydraulic.pdf (Line 7)",
+          "value": "Grey line (Hydraulic fluid path) connects PLC-03 to HPU",
+          "trust_level": "OFFICIAL",
+          "status": "FLAGGED_ANOMALY"
+        },
+        {
+          "source": "diagrams/system_diagram_hydraulic.pdf (Legend & Lines 8, 9)",
+          "value": "Purple lines (Control/signal connections) connect PLC-03 to PS-04A and IV-21",
+          "trust_level": "OFFICIAL",
+          "status": "VERIFIED_SIGNAL_LOOP"
+        }
+      ],
+      "resolution_status": "UNRESOLVED",
+      "resolution_rationale": "The purple signal lines between PLC-03 and PS-04A/IV-21 are structurally confirmed. The grey line connecting PLC-03 to HPU contradicts hydraulic design principles (electronic controllers do not carry fluid). Status is explicitly preserved as UNCERTAIN_EDGE_FLAGGED_FOR_REVIEW for manual engineering inspection.",
+      "preferred_fact_id": null
+    }
+  ]
+}
