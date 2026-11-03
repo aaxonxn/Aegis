@@ -35,50 +35,50 @@
     }
   },
   "variation_metrics": {
-    "adversarial_scoping": {
-      "total": 5,
-      "correct": 3,
-      "accuracy_percent": 60.0
-    },
-    "misspelling": {
-      "total": 1,
-      "correct": 0,
-      "accuracy_percent": 0.0
-    },
     "abbreviation": {
       "total": 2,
       "correct": 2,
       "accuracy_percent": 100.0
+    },
+    "adversarial_scoping": {
+      "total": 5,
+      "correct": 3,
+      "accuracy_percent": 60.0
     },
     "combined_facts": {
       "total": 2,
       "correct": 1,
       "accuracy_percent": 50.0
     },
-    "false_assumption": {
-      "total": 5,
-      "correct": 3,
-      "accuracy_percent": 60.0
+    "conversational": {
+      "total": 6,
+      "correct": 5,
+      "accuracy_percent": 83.3
     },
     "cross_doc": {
       "total": 10,
       "correct": 4,
       "accuracy_percent": 40.0
     },
-    "conversational": {
-      "total": 6,
-      "correct": 5,
-      "accuracy_percent": 83.3
-    },
-    "terminology": {
-      "total": 11,
-      "correct": 6,
-      "accuracy_percent": 54.5
+    "false_assumption": {
+      "total": 5,
+      "correct": 3,
+      "accuracy_percent": 60.0
     },
     "indirect": {
       "total": 3,
       "correct": 3,
       "accuracy_percent": 100.0
+    },
+    "misspelling": {
+      "total": 1,
+      "correct": 0,
+      "accuracy_percent": 0.0
+    },
+    "terminology": {
+      "total": 11,
+      "correct": 6,
+      "accuracy_percent": 54.5
     }
   },
   "entailment_summary": {

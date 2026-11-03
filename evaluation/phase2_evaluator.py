@@ -196,7 +196,7 @@ class Phase2Evaluator:
             }
 
         # Variation breakdowns
-        variations = list(set(r["variation_type"] for r in results))
+        variations = sorted(list(set(r["variation_type"] for r in results)))
         variation_metrics = {}
         for var in variations:
             var_results = [r for r in results if r["variation_type"] == var]
