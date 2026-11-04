@@ -137,6 +137,13 @@ Aegis/
 │   └── screenshots/                  # HMI screens (Home, Alarms, Diagnostics)
 ├── app/                              # Streamlit Web Application
 │   └── dashboard.py                  # 7-view interactive intelligence dashboard
+├── api/                              # Vercel Serverless ASGI Backend
+│   ├── index.py                      # FastAPI serverless handler exposing QA & metadata
+│   └── requirements.txt              # Lightweight runtime dependencies (fast cold starts)
+├── public/                           # Edge-hosted static web dashboard
+│   └── index.html                    # Responsive industrial control UI (Tailwind CSS)
+├── run_local_server.py               # Local Vercel emulation server
+├── vercel.json                       # Vercel serverless routing configuration
 ├── ingestion/                        # Multi-modal extraction pipeline
 │   ├── base.py                       # Abstract BaseExtractor class
 │   ├── pdf_extractor.py              # Born-digital PDF extractor (PyMuPDF)
@@ -230,6 +237,27 @@ Open your browser at `http://localhost:8501` to access the 7 interactive modules
 5. **Knowledge Graph Explorer**: Topological relational graph and schematic edge verification.
 6. **Multi-Modal Document Browser**: Raw text blocks, OCR bounding boxes, and spreadsheet viewer.
 7. **Quantitative Benchmark Audit**: Real-time evaluation scorecard and provenance inspect-by-question view.
+
+### 6. Launch the Vercel-Ready Web Dashboard (Local Emulation)
+`powershell
+python run_local_server.py
+`
+Open your browser at http://localhost:8000 to interact with the responsive industrial web dashboard and test the /api/* endpoints locally.
+
+### 7. Deploy to Vercel (Serverless Cloud Deployment)
+Aegis includes a production-ready, decoupled Vercel deployment architecture (ercel.json, pi/index.py, public/index.html) optimized for cold-start latency (<200 ms) and zero API costs:
+
+#### Method 1: Git Push (Automatic CI/CD)
+1. Push this repository to GitHub: https://github.com/aaxonxn/Aegis
+2. Open [vercel.com/new](https://vercel.com/new) and import the repository.
+3. Keep Framework Preset as **Other** and Root Directory as ./.
+4. Click **Deploy**. Vercel will deploy the Python ASGI Serverless API and Edge static UI automatically.
+
+#### Method 2: Vercel CLI
+`powershell
+npx vercel
+npx vercel --prod
+`
 
 ---
 

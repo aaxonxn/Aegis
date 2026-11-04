@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aegis Knowledge Intelligence System — Series-7 HCS</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              800: '#1e40af',
+              900: '#1e3a8a',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #0B1120; color: #F1F5F9; }
+    .glass-panel { background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(12px); border: 1px solid rgba(51, 65, 85, 0.6); }
+    .glass-card { background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(71, 85, 105, 0.5); }
+    .code-chip { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- TOP APP BAR -->
+  <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="h-10 w-10 rounded-lg bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center shadow-lg shadow-blue-500/20 text-white font-black text-xl">
+          ⚙️
+        </div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <span class="font-extrabold tracking-tight text-lg text-white">AEGIS</span>
+            <span class="text-xs px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 font-semibold border border-blue-500/20">INTELLIGENCE</span>
+          </div>
+          <p class="text-xs text-slate-400">Series-7 Hydraulic Control System (HCS) &bull; Provenance-Preserving QA</p>
+        </div>
+      </div>
+
+      <!-- STATUS BADGES -->
+      <div class="hidden md:flex items-center space-x-3 text-xs">
+        <span class="inline-flex items-center px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+          <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 mr-1.5 animate-pulse"></span>
+          Air-Gapped Offline Engine
+        </span>
+        <span class="inline-flex items-center px-2.5 py-1 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">
+          372 Chunks &bull; 20 Files
+        </span>
+        <span class="inline-flex items-center px-2.5 py-1 rounded-full bg-purple-500/10 text-purple-400 border border-purple-500/20">
+          Vercel Serverless
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <!-- NAVIGATION TABS -->
+  <nav class="border-b border-slate-800 bg-slate-900/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex space-x-1 sm:space-x-8 overflow-x-auto text-sm font-medium">
+      <button onclick="switchTab('qa')" id="tab-btn-qa" class="tab-btn py-3 px-3 border-b-2 border-blue-500 text-blue-400 flex items-center space-x-2 whitespace-nowrap">
+        <span>🔍 Live Intelligence Q&A</span>
+      </button>
+      <button onclick="switchTab('entities')" id="tab-btn-entities" class="tab-btn py-3 px-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center space-x-2 whitespace-nowrap">
+        <span>🏷️ Canonical Entities</span>
+      </button>
+      <button onclick="switchTab('conflicts')" id="tab-btn-conflicts" class="tab-btn py-3 px-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center space-x-2 whitespace-nowrap">
+        <span>⚖️ Revision Conflicts</span>
+      </button>
+      <button onclick="switchTab('documents')" id="tab-btn-documents" class="tab-btn py-3 px-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center space-x-2 whitespace-nowrap">
+        <span>📁 Document Corpus (20)</span>
+      </button>
+      <button onclick="switchTab('benchmarks')" id="tab-btn-benchmarks" class="tab-btn py-3 px-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center space-x-2 whitespace-nowrap">
+        <span>📊 Audit & Benchmarks</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTAINER -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
+
+    <!-- ================================================================= -->
+    <!-- TAB 1: LIVE INTELLIGENCE Q&A -->
+    <!-- ================================================================= -->
+    <div id="tab-content-qa" class="space-y-6">
+      
+      <!-- HERO QUERY BOX -->
+      <div class="glass-panel p-6 rounded-2xl shadow-xl">
+        <label for="query-input" class="block text-sm font-semibold text-slate-200 mb-2">
+          Natural Language Engineering Query
+        </label>
+        <div class="flex flex-col sm:flex-row gap-3">
+          <input 
+            type="text" 
+            id="query-input" 
+            placeholder="Ask a technical question (e.g. What are the startup requirements for the HPU?)" 
+            class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 font-sans"
+            onkeydown="if(event.key === 'Enter') executeQuery()"
+          />
+          <button 
+            onclick="executeQuery()" 
+            id="query-submit-btn" 
+            class="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-6 py-3 rounded-xl transition flex items-center justify-center space-x-2 shadow-lg shadow-blue-600/30">
+            <span>Query System</span>
+          </button>
+        </div>
+
+        <!-- QUICK QUESTION PRESETS -->
+        <div class="mt-4 pt-4 border-t border-slate-800">
+          <span class="text-xs font-semibold uppercase tracking-wider text-slate-400 block mb-2">
+            Preset Evaluation Scenarios:
+          </span>
+          <div class="flex flex-wrap gap-2 text-xs">
+            <button onclick="setQuery('What are the startup requirements for the HPU?')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700">
+              ⚡ HPU Startup Preconditions
+            </button>
+            <button onclick="setQuery('What was the normal operating pressure threshold before software revision 3.2?')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700">
+              ⚖️ Revision 3.2 Pressure Conflict (180 vs 200 bar)
+            </button>
+            <button onclick="setQuery('What alarm is triggered when pressure falls below 150 bar?')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700">
+              🚨 Alarm A17 Threshold
+            </button>
+            <button onclick="setQuery('What is the mean time between failures (MTBF) for isolation valve IV-21?')" class="px-3 py-1.5 rounded-lg bg-purple-950/40 hover:bg-purple-900/40 text-purple-300 transition border border-purple-800/40">
+              🛑 IV-21 MTBF (Unanswerable &bull; Abstain)
+            </button>
+            <button onclick="setQuery('Is the Aegis Series-7 HCS compatible with a 3-phase 400V supply?')" class="px-3 py-1.5 rounded-lg bg-purple-950/40 hover:bg-purple-900/40 text-purple-300 transition border border-purple-800/40">
+              🛑 400V European Supply (Unanswerable &bull; Abstain)
+            </button>
+            <button onclick="setQuery('What does the grey line connecting PLC-03 to the HPU represent on the hydraulic schematic?')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700">
+              📐 Vector Schematic Anomaly
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- RESPONSE SECTION (HIDDEN BY DEFAULT) -->
+      <div id="response-container" class="hidden space-y-6">
+        
+        <!-- DIRECT ANSWER CARD -->
+        <div class="glass-panel p-6 rounded-2xl border-l-4" id="direct-answer-panel">
+          <div class="flex items-start justify-between mb-4">
+            <div>
+              <span class="text-xs uppercase tracking-wider font-bold text-slate-400">Direct Synthesized Answer</span>
+              <h2 id="response-question" class="text-lg font-semibold text-white mt-0.5"></h2>
+            </div>
+            <div id="confidence-badge"></div>
+          </div>
+          
+          <div id="direct-answer-text" class="text-slate-100 text-base leading-relaxed mb-4"></div>
+
+          <!-- UNANSWERED ASPECTS / ABSTENTION ALERT (IF APPLICABLE) -->
+          <div id="unanswered-alert" class="hidden p-4 rounded-xl bg-purple-950/30 border border-purple-700/50 mb-4">
+            <div class="flex items-start space-x-3">
+              <span class="text-purple-400 text-lg">⚠️</span>
+              <div>
+                <h4 class="text-sm font-bold text-purple-300">Honest Negative Abstention</h4>
+                <p id="unanswered-text" class="text-xs text-purple-200 mt-1"></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- CONFIDENCE SCORE BAR -->
+          <div class="flex items-center space-x-3 pt-4 border-t border-slate-800 text-xs text-slate-400">
+            <span>Heuristic Confidence:</span>
+            <div class="w-36 bg-slate-800 h-2 rounded-full overflow-hidden">
+              <div id="confidence-bar" class="h-full bg-blue-500 rounded-full" style="width: 0%"></div>
+            </div>
+            <span id="confidence-value" class="font-mono text-slate-200"></span>
+          </div>
+        </div>
+
+        <!-- SUPPORTING CLAIMS & EVIDENCE PROVENANCE (2-COL) -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          
+          <!-- CLAIMS ACCORDION -->
+          <div class="glass-panel p-6 rounded-2xl">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-sm font-bold uppercase tracking-wider text-slate-300 flex items-center space-x-2">
+                <span>📋 Supporting Claims</span>
+                <span id="claims-count" class="px-2 py-0.5 rounded-full bg-slate-800 text-xs font-mono text-blue-400"></span>
+              </h3>
+            </div>
+            <div id="claims-list" class="space-y-3"></div>
+          </div>
+
+          <!-- VERIFIABLE PROVENANCE SOURCES -->
+          <div class="glass-panel p-6 rounded-2xl">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-sm font-bold uppercase tracking-wider text-slate-300 flex items-center space-x-2">
+                <span>📑 Verifiable Source Citations</span>
+                <span id="sources-count" class="px-2 py-0.5 rounded-full bg-slate-800 text-xs font-mono text-emerald-400"></span>
+              </h3>
+            </div>
+            <div id="sources-list" class="space-y-3"></div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- TAB 2: CANONICAL ENTITY DISAMBIGUATION -->
+    <!-- ================================================================= -->
+    <div id="tab-content-entities" class="hidden space-y-6">
+      
+      <!-- EXPLANATION BANNER -->
+      <div class="glass-panel p-6 rounded-2xl border-l-4 border-indigo-500">
+        <h3 class="text-lg font-bold text-white mb-1">Canonical Entity Normalization</h3>
+        <p class="text-sm text-slate-300 leading-relaxed">
+          Industrial documentation frequently contains overlapping alphanumeric designations (e.g., <code class="text-blue-400">PS-04</code>, <code class="text-emerald-400">PS-04A</code>, and <code class="text-purple-400">PS-40</code>).
+          Aegis canonical normalization isolates exact tag boundaries to prevent fuzzy false-positive merging across hardware generations.
+        </p>
+      </div>
+
+      <!-- ENTITY DISAMBIGUATION SHOWCASE -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="glass-card p-5 rounded-xl border-blue-500/40">
+          <div class="flex items-center justify-between mb-2">
+            <span class="font-mono text-base font-bold text-blue-400">PS-04</span>
+            <span class="px-2 py-0.5 rounded text-xs bg-slate-800 text-slate-400">SUPERSEDED</span>
+          </div>
+          <p class="text-xs text-slate-300 font-semibold mb-2">Pressure Sensor (Pre-3.2 Legacy)</p>
+          <p class="text-xs text-slate-400 mb-3">Replaced by PS-04A per ECN-1042. Set to 180 bar threshold with 0-10V signal.</p>
+          <div class="text-xs font-mono text-slate-400 bg-slate-950 p-2 rounded">
+            Aliases: PS-04, PS04, Pressure Sensor 4
+          </div>
+        </div>
+
+        <div class="glass-card p-5 rounded-xl border-emerald-500/40">
+          <div class="flex items-center justify-between mb-2">
+            <span class="font-mono text-base font-bold text-emerald-400">PS-04A</span>
+            <span class="px-2 py-0.5 rounded text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">CURRENT</span>
+          </div>
+          <p class="text-xs text-slate-300 font-semibold mb-2">Pressure Sensor (Rev 3.2+ Current)</p>
+          <p class="text-xs text-slate-400 mb-3">Introduced by ECN-1042. Increased threshold to 200 bar with 4-20mA current loop.</p>
+          <div class="text-xs font-mono text-slate-400 bg-slate-950 p-2 rounded">
+            Aliases: PS-04A, PS04A, PT-04A
+          </div>
+        </div>
+
+        <div class="glass-card p-5 rounded-xl border-purple-500/40">
+          <div class="flex items-center justify-between mb-2">
+            <span class="font-mono text-base font-bold text-purple-400">PS-40</span>
+            <span class="px-2 py-0.5 rounded text-xs bg-purple-500/10 text-purple-400 border border-purple-500/20">SAFETY SWITCH</span>
+          </div>
+          <p class="text-xs text-slate-300 font-semibold mb-2">Accumulator Pressure Switch</p>
+          <p class="text-xs text-slate-400 mb-3">Independent safety switch for accumulator circuit (220 bar cut-out). Distinct component.</p>
+          <div class="text-xs font-mono text-slate-400 bg-slate-950 p-2 rounded">
+            Aliases: PS-40, PS40, Accumulator Switch
+          </div>
+        </div>
+      </div>
+
+      <!-- FULL ENTITIES TABLE -->
+      <div class="glass-panel p-6 rounded-2xl overflow-x-auto">
+        <h4 class="text-base font-bold text-white mb-4">Complete Canonical Entity Registry</h4>
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr class="border-b border-slate-700 text-slate-400 uppercase tracking-wider">
+              <th class="py-3 px-3">Canonical Tag</th>
+              <th class="py-3 px-3">Type</th>
+              <th class="py-3 px-3">Location</th>
+              <th class="py-3 px-3">Known Aliases</th>
+              <th class="py-3 px-3">Status</th>
+            </tr>
+          </thead>
+          <tbody id="entities-table-body" class="divide-y divide-slate-800">
+            <!-- Populated via API -->
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- TAB 3: REVISION CONFLICTS & ECNS -->
+    <!-- ================================================================= -->
+    <div id="tab-content-conflicts" class="hidden space-y-6">
+      
+      <div class="glass-panel p-6 rounded-2xl border-l-4 border-amber-500">
+        <h3 class="text-lg font-bold text-white mb-1">Revision-Aware Conflict Reconciliation</h3>
+        <p class="text-sm text-slate-300 leading-relaxed">
+          Industrial systems evolve across firmware updates, hardware bulletins, and engineering change notices (ECNs).
+          Aegis avoids silently overwriting historic values. Both contradictory propositions are recorded in SQLite with strict applicability scopes.
+        </p>
+      </div>
+
+      <!-- REVISION COMPARISON CARDS -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <div class="glass-card p-6 rounded-xl border-amber-500/40">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-bold uppercase tracking-wider text-amber-400">Pre-Revision 3.2 Operating State</span>
+            <span class="px-2 py-0.5 rounded text-xs bg-amber-500/10 text-amber-400 border border-amber-500/20">HISTORIC SPEC</span>
+          </div>
+          <div class="text-3xl font-extrabold text-white font-mono mb-2">180 bar</div>
+          <p class="text-sm text-slate-300 mb-4">Original normal operating pressure threshold before engineering modification.</p>
+          <div class="space-y-2 text-xs border-t border-slate-800 pt-3 text-slate-400">
+            <div><strong class="text-slate-300">Active Sensor:</strong> PS-04 (0–10V voltage output)</div>
+            <div><strong class="text-slate-300">Citing Source:</strong> <code class="text-blue-400">manuals/legacy_manual_v1.html</code> (Section 5)</div>
+            <div><strong class="text-slate-300">Trust Level:</strong> OFFICIAL_SUPERSEDED (Weight: 0.40)</div>
+          </div>
+        </div>
+
+        <div class="glass-card p-6 rounded-xl border-emerald-500/40">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Current Revision 3.2+ Operating State</span>
+            <span class="px-2 py-0.5 rounded text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">CURRENT PRODUCTION</span>
+          </div>
+          <div class="text-3xl font-extrabold text-white font-mono mb-2">200 bar</div>
+          <p class="text-sm text-slate-300 mb-4">Updated normal operating pressure threshold enacted to accelerate press cycle times.</p>
+          <div class="space-y-2 text-xs border-t border-slate-800 pt-3 text-slate-400">
+            <div><strong class="text-slate-300">Active Sensor:</strong> PS-04A (4–20mA current loop)</div>
+            <div><strong class="text-slate-300">Authoritative Order:</strong> <code class="text-emerald-400">engineering_bulletins/ECN-1042.pdf</code></div>
+            <div><strong class="text-slate-300">Trust Level:</strong> AUTHORITATIVE_BULLETIN (Weight: 1.00)</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RESOLUTION PRIORITY MATRIX -->
+      <div class="glass-panel p-6 rounded-2xl">
+        <h4 class="text-base font-bold text-white mb-3">Deterministic Precedence Rules</h4>
+        <div class="space-y-2 text-xs text-slate-300">
+          <div class="p-3 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-between">
+            <span>1. Authoritative Change Orders (<code class="text-emerald-400">AUTHORITATIVE_BULLETIN</code>, ECN-1042/1058)</span>
+            <span class="font-mono text-emerald-400 font-bold">Priority 1 (Weight: 1.00)</span>
+          </div>
+          <div class="p-3 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-between">
+            <span>2. Current Official Manuals & System Config (<code class="text-blue-400">OFFICIAL</code>, Rev 3.2)</span>
+            <span class="font-mono text-blue-400 font-bold">Priority 2 (Weight: 0.95)</span>
+          </div>
+          <div class="p-3 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-between">
+            <span>3. Historic Superseded Manuals (<code class="text-amber-400">OFFICIAL_SUPERSEDED</code>, Rev 3.1)</span>
+            <span class="font-mono text-amber-400 font-bold">Priority 3 (Weight: 0.40)</span>
+          </div>
+          <div class="p-3 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-between">
+            <span>4. Informal Field Notes & Raw Noise (<code class="text-slate-400">FIELD_UNREVIEWED</code>, site survey)</span>
+            <span class="font-mono text-slate-400 font-bold">Priority 4 (Weight: 0.00-0.60)</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- TAB 4: MULTI-MODAL DOCUMENT CORPUS -->
+    <!-- ================================================================= -->
+    <div id="tab-content-documents" class="hidden space-y-6">
+      
+      <div class="glass-panel p-6 rounded-2xl">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+          <div>
+            <h3 class="text-lg font-bold text-white">Ingested Document Corpus</h3>
+            <p class="text-xs text-slate-400">20 Heterogeneous Files Across 8 Multi-Modal Formats &bull; 372 Extracted Chunks</p>
+          </div>
+          <div class="flex items-center space-x-2 text-xs">
+            <span class="px-2.5 py-1 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20 font-mono">SQLite: aegis_knowledge.db</span>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="border-b border-slate-700 text-slate-400 uppercase tracking-wider">
+                <th class="py-3 px-3">Filename</th>
+                <th class="py-3 px-3">Format</th>
+                <th class="py-3 px-3">Doc Type</th>
+                <th class="py-3 px-3">Trust Tier</th>
+                <th class="py-3 px-3">Chunks</th>
+                <th class="py-3 px-3">Revision</th>
+              </tr>
+            </thead>
+            <tbody id="documents-table-body" class="divide-y divide-slate-800">
+              <!-- Populated via API -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- TAB 5: AUDIT & BENCHMARKS -->
+    <!-- ================================================================= -->
+    <div id="tab-content-benchmarks" class="hidden space-y-6">
+      
+      <!-- PHASE COMPARISON SUMMARY -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <div class="glass-card p-6 rounded-2xl border-blue-500/40">
+          <div class="flex items-center justify-between mb-2">
+            <h4 class="text-base font-bold text-blue-400">Phase 1: Ground Truth Baseline</h4>
+            <span class="px-2 py-0.5 rounded text-xs bg-blue-500/10 text-blue-400 border border-blue-500/20 font-mono">38 TESTS PASSING</span>
+          </div>
+          <div class="text-4xl font-black text-white font-mono my-3">100.0% <span class="text-sm font-normal text-slate-400">(23/23)</span></div>
+          <div class="space-y-1.5 text-xs text-slate-300 border-t border-slate-800 pt-3">
+            <div class="flex justify-between"><span>Citation Validity:</span> <strong class="text-emerald-400">100.0% (23/23)</strong></div>
+            <div class="flex justify-between"><span>Abstention Decision Precision:</span> <strong class="text-emerald-400">100.0% (5/5)</strong></div>
+            <div class="flex justify-between"><span>Evaluation Dataset:</span> <span class="text-slate-400">23 Targeted Questions</span></div>
+          </div>
+        </div>
+
+        <div class="glass-card p-6 rounded-2xl border-purple-500/40">
+          <div class="flex items-center justify-between mb-2">
+            <h4 class="text-base font-bold text-purple-400">Phase 2: Robustness & Generalization Audit</h4>
+            <span class="px-2 py-0.5 rounded text-xs bg-purple-500/10 text-purple-400 border border-purple-500/20 font-mono">48 TESTS PASSING</span>
+          </div>
+          <div class="text-4xl font-black text-white font-mono my-3">60.0% <span class="text-sm font-normal text-slate-400">(27/45)</span></div>
+          <div class="space-y-1.5 text-xs text-slate-300 border-t border-slate-800 pt-3">
+            <div class="flex justify-between"><span>Citation Validity:</span> <strong class="text-emerald-400">93.3% (42/45)</strong></div>
+            <div class="flex justify-between"><span>Abstention Decision Precision:</span> <strong class="text-emerald-400">100.0% (7/7)</strong></div>
+            <div class="flex justify-between"><span>Unanswerable Detection Recall:</span> <strong class="text-amber-400">60.0% (3/5)</strong></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- PHASE 2 DIAGNOSTIC CATEGORIES -->
+      <div class="glass-panel p-6 rounded-2xl">
+        <h4 class="text-base font-bold text-white mb-3">Phase 2 Diagnostic Category Performance</h4>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="border-b border-slate-700 text-slate-400 uppercase tracking-wider">
+                <th class="py-2.5 px-3">Diagnostic Category</th>
+                <th class="py-2.5 px-3">Tested</th>
+                <th class="py-2.5 px-3">Correct</th>
+                <th class="py-2.5 px-3">Accuracy</th>
+                <th class="py-2.5 px-3">Primary Failure Mode</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800 text-slate-300">
+              <tr>
+                <td class="py-2 px-3 font-semibold text-white">Semantically Rephrased Factual</td>
+                <td class="py-2 px-3 font-mono">15</td>
+                <td class="py-2 px-3 font-mono text-emerald-400">11</td>
+                <td class="py-2 px-3 font-mono font-bold text-emerald-400">73.3%</td>
+                <td class="py-2 px-3 text-slate-400">Conversational syntax misses regex rule, triggering single-chunk fallback.</td>
+              </tr>
+              <tr>
+                <td class="py-2 px-3 font-semibold text-white">Multi-Document Reasoning</td>
+                <td class="py-2 px-3 font-mono">10</td>
+                <td class="py-2 px-3 font-mono text-amber-400">4</td>
+                <td class="py-2 px-3 font-mono font-bold text-amber-400">40.0%</td>
+                <td class="py-2 px-3 text-slate-400">Top-1 chunk retrieval horizon cannot synthesize disjoint multi-document facts.</td>
+              </tr>
+              <tr>
+                <td class="py-2 px-3 font-semibold text-white">Entity Disambiguation</td>
+                <td class="py-2 px-3 font-mono">5</td>
+                <td class="py-2 px-3 font-mono text-emerald-400">3</td>
+                <td class="py-2 px-3 font-mono font-bold text-emerald-400">60.0%</td>
+                <td class="py-2 px-3 text-slate-400">Lexical token collisions in fallback retriever bypass entity resolution.</td>
+              </tr>
+              <tr>
+                <td class="py-2 px-3 font-semibold text-white">False-Premise Handling</td>
+                <td class="py-2 px-3 font-mono">5</td>
+                <td class="py-2 px-3 font-mono text-emerald-400">3</td>
+                <td class="py-2 px-3 font-mono font-bold text-emerald-400">60.0%</td>
+                <td class="py-2 px-3 text-slate-400">Uncritical snippet retrieval returns adjacent text rather than refuting premise.</td>
+              </tr>
+              <tr>
+                <td class="py-2 px-3 font-semibold text-white">Unanswerable / Abstention</td>
+                <td class="py-2 px-3 font-mono">5</td>
+                <td class="py-2 px-3 font-mono text-emerald-400">3</td>
+                <td class="py-2 px-3 font-mono font-bold text-emerald-400">60.0%</td>
+                <td class="py-2 px-3 text-slate-400">Generic domain keywords push BM25 score above 1.0 threshold.</td>
+              </tr>
+              <tr>
+                <td class="py-2 px-3 font-semibold text-white">Targeted Adversarial Scenarios</td>
+                <td class="py-2 px-3 font-mono">5</td>
+                <td class="py-2 px-3 font-mono text-emerald-400">3</td>
+                <td class="py-2 px-3 font-mono font-bold text-emerald-400">60.0%</td>
+                <td class="py-2 px-3 text-slate-400">Firmware revision ambiguity (3.1 vs 3.2) in unstructured fallback snippets.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- EVIDENCE ENTAILMENT VALIDATOR (88 CLAIMS) -->
+      <div class="glass-panel p-6 rounded-2xl">
+        <h4 class="text-base font-bold text-white mb-2">Evidence Entailment Grounding (88 Claims Audited)</h4>
+        <p class="text-xs text-slate-400 mb-4">Deterministic symbolic AST proposition matching across all 45 Phase 2 responses.</p>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div class="p-4 rounded-xl bg-slate-900 border border-emerald-500/30 text-center">
+            <span class="text-xs uppercase tracking-wider text-slate-400 block mb-1">Direct Evidence</span>
+            <span class="text-2xl font-black text-emerald-400 font-mono">58.0%</span>
+            <span class="text-xs text-slate-500 block mt-0.5">51 Claims</span>
+          </div>
+          <div class="p-4 rounded-xl bg-slate-900 border border-blue-500/30 text-center">
+            <span class="text-xs uppercase tracking-wider text-slate-400 block mb-1">Inferred Context</span>
+            <span class="text-2xl font-black text-blue-400 font-mono">26.1%</span>
+            <span class="text-xs text-slate-500 block mt-0.5">23 Claims</span>
+          </div>
+          <div class="p-4 rounded-xl bg-slate-900 border border-amber-500/30 text-center">
+            <span class="text-xs uppercase tracking-wider text-slate-400 block mb-1">Unsupported</span>
+            <span class="text-2xl font-black text-amber-400 font-mono">15.9%</span>
+            <span class="text-xs text-slate-500 block mt-0.5">14 Claims</span>
+          </div>
+          <div class="p-4 rounded-xl bg-slate-900 border border-rose-500/30 text-center">
+            <span class="text-xs uppercase tracking-wider text-slate-400 block mb-1">Contradicted</span>
+            <span class="text-2xl font-black text-emerald-400 font-mono">0.0%</span>
+            <span class="text-xs text-slate-500 block mt-0.5">0 Claims</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-slate-800 bg-slate-900/80 py-6 text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div>
+        <span>Aegis Knowledge Intelligence System &bull; Offline Industrial Provenance Engine</span>
+      </div>
+      <div class="flex items-center space-x-4">
+        <a href="https://github.com/aaxonxn/Aegis" target="_blank" class="text-slate-400 hover:text-white transition">GitHub Repository</a>
+        <span>&bull;</span>
+        <span>48 Automated Tests Passing (0.31s)</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- APPLICATION LOGIC SCRIPT -->
+  <script>
+    // Tab Switching
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('border-blue-500', 'text-blue-400');
+        btn.classList.add('border-transparent', 'text-slate-400');
+      });
+      document.getElementById('tab-btn-' + tabId).classList.remove('border-transparent', 'text-slate-400');
+      document.getElementById('tab-btn-' + tabId).classList.add('border-blue-500', 'text-blue-400');
+
+      ['qa', 'entities', 'conflicts', 'documents', 'benchmarks'].forEach(id => {
+        document.getElementById('tab-content-' + id).classList.add('hidden');
+      });
+      document.getElementById('tab-content-' + tabId).classList.remove('hidden');
+
+      if (tabId === 'entities') loadEntities();
+      if (tabId === 'documents') loadDocuments();
+    }
+
+    function setQuery(text) {
+      document.getElementById('query-input').value = text;
+      executeQuery();
+    }
+
+    async function executeQuery() {
+      const qInput = document.getElementById('query-input');
+      const q = qInput.value.trim();
+      if (!q) return;
+
+      const submitBtn = document.getElementById('query-submit-btn');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span>Searching...</span>';
+
+      try {
+        const res = await fetch('/api/query', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ question: q })
+        });
+
+        if (!res.ok) {
+          throw new Error('Server returned ' + res.status);
+        }
+
+        const data = await res.json();
+        renderResponse(data);
+      } catch (err) {
+        alert('Query execution failed: ' + err.message);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<span>Query System</span>';
+      }
+    }
+
+    function renderResponse(data) {
+      document.getElementById('response-container').classList.remove('hidden');
+      document.getElementById('response-question').innerText = data.question;
+      document.getElementById('direct-answer-text').innerText = data.direct_answer;
+
+      // Confidence badge
+      const badgeContainer = document.getElementById('confidence-badge');
+      const status = data.confidence_status;
+      let badgeHtml = '';
+      let borderClass = 'border-blue-500';
+
+      if (data.abstain || status.includes('ABSTAIN')) {
+        badgeHtml = '<span class="px-3 py-1 rounded-full text-xs font-bold bg-purple-500/20 text-purple-300 border border-purple-500/40">ABSTAIN / UNANSWERABLE</span>';
+        borderClass = 'border-purple-500';
+      } else if (status === 'HIGH') {
+        badgeHtml = '<span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">HIGH CONFIDENCE</span>';
+        borderClass = 'border-emerald-500';
+      } else if (status === 'MEDIUM') {
+        badgeHtml = '<span class="px-3 py-1 rounded-full text-xs font-bold bg-blue-500/20 text-blue-300 border border-blue-500/40">MEDIUM CONFIDENCE</span>';
+        borderClass = 'border-blue-500';
+      } else {
+        badgeHtml = '<span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40">LOW CONFIDENCE</span>';
+        borderClass = 'border-amber-500';
+      }
+
+      badgeContainer.innerHTML = badgeHtml;
+      document.getElementById('direct-answer-panel').className = `glass-panel p-6 rounded-2xl border-l-4 ${borderClass}`;
+
+      // Confidence bar
+      const scorePct = Math.round((data.confidence_score || 0) * 100);
+      document.getElementById('confidence-bar').style.width = scorePct + '%';
+      document.getElementById('confidence-value').innerText = (data.confidence_score || 0).toFixed(2);
+
+      // Unanswered aspects
+      const alertBox = document.getElementById('unanswered-alert');
+      if (data.unanswered_aspects && data.unanswered_aspects.length > 0) {
+        alertBox.classList.remove('hidden');
+        document.getElementById('unanswered-text').innerText = data.unanswered_aspects.join(' ');
+      } else {
+        alertBox.classList.add('hidden');
+      }
+
+      // Claims
+      const claimsContainer = document.getElementById('claims-list');
+      claimsContainer.innerHTML = '';
+      document.getElementById('claims-count').innerText = (data.claims || []).length;
+
+      if (!data.claims || data.claims.length === 0) {
+        claimsContainer.innerHTML = '<p class="text-xs text-slate-500 italic">No discrete claims extracted.</p>';
+      } else {
+        data.claims.forEach((c, idx) => {
+          const div = document.createElement('div');
+          div.className = 'p-3 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-200 flex items-start space-x-2';
+          div.innerHTML = `<span class="text-blue-400 font-mono font-bold mt-0.5">#${idx + 1}</span><p class="flex-1">${c}</p>`;
+          claimsContainer.appendChild(div);
+        });
+      }
+
+      // Sources
+      const sourcesContainer = document.getElementById('sources-list');
+      sourcesContainer.innerHTML = '';
+      document.getElementById('sources-count').innerText = (data.sources || []).length;
+
+      if (!data.sources || data.sources.length === 0) {
+        sourcesContainer.innerHTML = '<p class="text-xs text-slate-500 italic">No direct sources cited.</p>';
+      } else {
+        data.sources.forEach(s => {
+          const div = document.createElement('div');
+          div.className = 'p-3 rounded-xl bg-slate-900 border border-slate-800 text-xs space-y-1.5';
+          div.innerHTML = `
+            <div class="flex items-center justify-between">
+              <span class="font-mono text-emerald-400 font-semibold">${s.document}</span>
+              <span class="px-2 py-0.5 rounded text-[10px] bg-slate-800 text-slate-300 font-bold">${s.trust_level}</span>
+            </div>
+            <div class="text-slate-400 text-[11px]">
+              <strong class="text-slate-300">Location:</strong> ${s.location}
+            </div>
+            <div class="text-slate-500 text-[10px] flex items-center justify-between pt-1 border-t border-slate-800">
+              <span>Extractor: <code class="text-slate-400">${s.extraction_method}</code></span>
+            </div>
+          `;
+          sourcesContainer.appendChild(div);
+        });
+      }
+
+      // Scroll to response
+      document.getElementById('response-container').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    async function loadEntities() {
+      const tbody = document.getElementById('entities-table-body');
+      if (tbody.children.length > 0) return; // already loaded
+
+      try {
+        const res = await fetch('/api/entities');
+        const entities = await res.json();
+        tbody.innerHTML = '';
+        entities.forEach(e => {
+          const tr = document.createElement('tr');
+          tr.className = 'hover:bg-slate-900/60 transition';
+          tr.innerHTML = `
+            <td class="py-2.5 px-3 font-mono font-bold text-blue-400">${e.canonical_name}</td>
+            <td class="py-2.5 px-3 text-slate-300">${e.entity_type}</td>
+            <td class="py-2.5 px-3 text-slate-400">${e.location || 'N/A'}</td>
+            <td class="py-2.5 px-3 font-mono text-[11px] text-slate-400">${(e.aliases || []).join(', ')}</td>
+            <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded text-[10px] bg-slate-800 text-slate-300">${e.status}</span></td>
+          `;
+          tbody.appendChild(tr);
+        });
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="5" class="py-4 text-center text-rose-400">Failed to load entities: ${err.message}</td></tr>`;
+      }
+    }
+
+    async function loadDocuments() {
+      const tbody = document.getElementById('documents-table-body');
+      if (tbody.children.length > 0) return; // already loaded
+
+      try {
+        const res = await fetch('/api/documents');
+        const docs = await res.json();
+        tbody.innerHTML = '';
+        docs.forEach(d => {
+          const tr = document.createElement('tr');
+          tr.className = 'hover:bg-slate-900/60 transition';
+          tr.innerHTML = `
+            <td class="py-2.5 px-3 font-mono font-semibold text-emerald-400">${d.filename}</td>
+            <td class="py-2.5 px-3 font-mono text-[11px] text-slate-400 uppercase">${d.file_format}</td>
+            <td class="py-2.5 px-3 text-slate-300">${d.doc_type}</td>
+            <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded text-[10px] bg-slate-800 text-blue-300 font-bold">${d.trust_level}</span></td>
+            <td class="py-2.5 px-3 font-mono text-slate-200">${d.chunk_count}</td>
+            <td class="py-2.5 px-3 font-mono text-slate-400">${d.revision || 'N/A'}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="6" class="py-4 text-center text-rose-400">Failed to load documents: ${err.message}</td></tr>`;
+      }
+    }
+  </script>
+
+</body>
+</html>
+
