@@ -2,9 +2,11 @@
 ### Provenance-Preserving Industrial Knowledge Ingestion, Entity Disambiguation, Conflict Reconciliation & Evidence QA
 
 **Public Repository:** [https://github.com/aaxonxn/Aegis](https://github.com/aaxonxn/Aegis)  
+**Live Demo:** [https://aegis-two-beige.vercel.app/](https://aegis-two-beige.vercel.app/)  
 **Target Domain:** Aegis Series-7 Hydraulic Control System (HCS) Technical Corpus  
 **Operating Environment:** 100% Offline / Local Execution (Zero Paid APIs, Zero Cloud Dependencies)  
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-000000.svg?logo=vercel&logoColor=white)](https://aegis-two-beige.vercel.app/)
 [![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/)
 [![Tests Passing](https://img.shields.io/badge/tests-48%2F48%20passing-brightgreen.svg)]()
 [![Phase 1 Benchmark](https://img.shields.io/badge/Phase%201%20Benchmark-100%25%20(23%2F23)-success.svg)]()
@@ -27,6 +29,32 @@ The **Aegis Knowledge Intelligence System** is an offline-first R&D prototype de
 > [!NOTE]
 > **Prototype Status & Evaluation Reality**:  
 > Aegis was evaluated across two distinct phases. On the original 23-question Phase 1 benchmark, Aegis achieved **100.0% accuracy**. An independent Phase 2 audit on 45 unseen questions revealed an overall accuracy of **60.0% (27/45)**, highlighting current architectural limitations in regex intent routing and single-chunk fallback retrieval.
+
+---
+
+## Live Demo
+
+The Aegis Knowledge Intelligence System is deployed live on Vercel and accessible publicly:
+
+🌐 **Official Live Deployment:** [https://aegis-two-beige.vercel.app/](https://aegis-two-beige.vercel.app/)
+
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-aegis--two--beige.vercel.app-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://aegis-two-beige.vercel.app/)
+
+### Deployment Modes: Live Web vs. Local Offline
+
+Aegis is designed to support two distinct operational environments:
+
+| Feature / Dimension | 🌐 Live Deployed Application (Vercel) | 💻 Local Offline Application (Streamlit) |
+|---|---|---|
+| **Access URL** | **[https://aegis-two-beige.vercel.app/](https://aegis-two-beige.vercel.app/)** | `http://localhost:8501` (`streamlit run app/dashboard.py`) |
+| **Hosting & Infrastructure** | Vercel Serverless Edge CDN + Python ASGI Serverless API (`api/index.py`) | Local desktop / workstation environment (Python 3.12, native SQLite, RapidOCR ONNX) |
+| **Setup Overhead** | **Zero installation required** — instant web access from any browser | Requires local repo clone, Python environment, dependencies, and ingestion pipeline execution |
+| **Network & Privacy** | Public cloud deployment; zero paid APIs; zero user query retention | **100% offline & air-gapped**; runs without internet or cloud dependencies |
+| **Primary Capabilities** | Evidence-based Question Answering, verifiable coordinate citations, conflict badge resolution, and canonical component lookup | Comprehensive 7-module diagnostic suite: OCR bounding box inspector, interactive topological knowledge graph, revision conflict timeline, and quantitative benchmark evaluation harnesses |
+
+#### When to Use Each Mode:
+- **Use the Live Vercel Application** for instant exploration: query the corpus in natural language, inspect provenance coordinate anchors across all ingested documents, verify conflict resolution badges, and browse canonical component registers directly in your browser.
+- **Use the Local Streamlit Application** for in-depth engineering audits: inspect raw multi-modal extractions with polygon bounding boxes, interactively explore the topological knowledge graph, and run the reproducible Phase 1 & Phase 2 quantitative evaluation benchmarks.
 
 ---
 
@@ -239,13 +267,15 @@ Open your browser at `http://localhost:8501` to access the 7 interactive modules
 7. **Quantitative Benchmark Audit**: Real-time evaluation scorecard and provenance inspect-by-question view.
 
 ### 6. Launch the Vercel-Ready Web Dashboard (Local Emulation)
-`powershell
+```powershell
 python run_local_server.py
-`
+```
 Open your browser at http://localhost:8000 to interact with the responsive industrial web dashboard and test the /api/* endpoints locally.
 
 ### 7. Deploy to Vercel (Serverless Cloud Deployment)
-Aegis includes a production-ready, decoupled Vercel deployment architecture (ercel.json, pi/index.py, public/index.html) optimized for cold-start latency (<200 ms) and zero API costs:
+Aegis includes a production-ready, decoupled Vercel deployment architecture (`vercel.json`, `api/index.py`, `public/index.html`) optimized for cold-start latency (<200 ms) and zero API costs:
+
+**Official Live Deployment:** [https://aegis-two-beige.vercel.app/](https://aegis-two-beige.vercel.app/)
 
 #### Method 1: Git Push (Automatic CI/CD)
 1. Push this repository to GitHub: https://github.com/aaxonxn/Aegis
@@ -254,10 +284,10 @@ Aegis includes a production-ready, decoupled Vercel deployment architecture (er
 4. Click **Deploy**. Vercel will deploy the Python ASGI Serverless API and Edge static UI automatically.
 
 #### Method 2: Vercel CLI
-`powershell
+```powershell
 npx vercel
 npx vercel --prod
-`
+```
 
 ---
 
@@ -451,4 +481,5 @@ A comprehensive architectural proposal has been prepared to evolve Aegis from a 
 - **Offline Functionality**: 100% verified locally with zero cloud dependencies.
 - **Audit Documentation**: Complete architectural and evaluation reports available under `reports/`.
 
-**Public Repository:** [https://github.com/aaxonxn/Aegis](https://github.com/aaxonxn/Aegis)
+**Public Repository:** [https://github.com/aaxonxn/Aegis](https://github.com/aaxonxn/Aegis)  
+**Live Demo:** [https://aegis-two-beige.vercel.app/](https://aegis-two-beige.vercel.app/)
